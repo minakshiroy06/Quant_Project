@@ -41,3 +41,5 @@ vignettes/*.pdf
 # Project specific
 # raw_data/
 # resources/
+.snakemake/
+.DS_Store
