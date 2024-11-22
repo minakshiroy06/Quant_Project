@@ -43,4 +43,8 @@ vignettes/*.pdf
 # resources/
 .snakemake/
 .DS_Store
-.Rproj
+Quant_Project.Rproj
+data/raw_fastq
+data/filtered
+data/processed
+resources/
