@@ -43,3 +43,4 @@ vignettes/*.pdf
 # resources/
 .snakemake/
 .DS_Store
+.Rproj
