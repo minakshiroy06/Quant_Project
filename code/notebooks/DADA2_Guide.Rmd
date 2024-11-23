@@ -147,6 +147,10 @@ sum(seqtab.nochim)/sum(seqtab)
 
 The frequency of chimeric sequences varies substantially from dataset to dataset, and depends on on factors including experimental procedures and sample complexity. Here chimeras make up about 21% of the merged sequence variants, but when we account for the abundances of those variants we see they account for only about 4% of the merged sequence reads.
 
+```{r}
+saveRDS(seqtab.nochim, file = here("data/processed/dada2/seqtab.nochim.rds"))
+```
+
 
 ## Track Reads
 
@@ -189,11 +193,6 @@ rownames(taxa.print) <- NULL
 head(taxa.print)
 ```
 
-## Export data tables
 
-```{r}
-write_csv(seqtab.nochim, "data/processed/dada2/seqtab.csv")
-write_csv(taxa, "data/processed/dada2/taxa.csv")
-```
 
 
