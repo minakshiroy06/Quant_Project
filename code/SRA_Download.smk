@@ -3,6 +3,8 @@ import pandas as pd
 
 RAWDIR = "data/raw_fastq"
 RAWEXT = "fastq.gz"
+RESULTSDIR = config["data/processed"]
+QCDIR = os.path.join(RESULTSDIR, "01_QC")
 
 # Sample dataframe
 data_input = pd.read_csv("data/SraRunTable.csv")
@@ -34,7 +36,32 @@ rule download_srr:
         pigz {params.outdir}/{wildcards.sample}_*
         """
 
-
+rule fastp:
+    conda: "envs/qc.yaml"
+    resources:
+        mem_mb=20000,
+        time_min=360,
+    threads: 12
+    input:
+        R1=QCDIR+"/raw_fastq/{sample}_1.fastq.gz",
+        R2=QCDIR+"/raw_fastq/{sample}_2.fastq.gz",
+    output:
+        T1=QCDIR+"/qc_reads/{sample}_1.trim.fastq.gz",
+        T2=QCDIR+"/qc_reads/{sample}_2.trim.fastq.gz",
+        json=QCDIR+"/qc_reads/{sample}.fastp.json",
+        html=QCDIR+"/qc_reads/{sample}.fastp.html",
+    shell:
+        """
+        fastp \
+            --in1 {input.R1} \
+            --in2 {input.R2} \
+            --out1 {output.T1} \
+            --out2 {output.T2} \
+            --json {output.json} \
+            --html {output.html} \
+            --thread {threads} \
+            --detect_adapter_for_pe
+        """
 
 
 
