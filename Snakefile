@@ -16,8 +16,8 @@ MATES = ['1', '2']
 
 rule all:
     input:
-        # expand(RAWDIR+"/raw_fastq/{sample}_{i}.fastq.gz", sample = SAMPLES, i = MATES)
-        expand(QCDIR+"/qc_reads/{sample}_2.fastp.fastq.gz", sample = SAMPLES, mate = MATES)
+        expand(RAWDIR+"/{sample}_{i}.fastq.gz", sample = SAMPLES, i = MATES)
+        # expand(QCDIR+"/qc_reads/{sample}_2.fastp.fastq.gz", sample = SAMPLES, mate = MATES)
 
 rule download_srr:
     output: 
@@ -37,32 +37,32 @@ rule download_srr:
         pigz {params.outdir}/{wildcards.sample}_*
         """
 
-rule fastp:
-    conda: "envs/fastp.yaml"
-    resources:
-        mem_mb=20000,
-        time_min=360,
-    threads: 12
-    input:
-        R1=RAWDIR + "/raw_fastq/{sample}_1.fastq.gz",
-        R2=RAWDIR + "/raw_fastq/{sample}_2.fastq.gz",
-    output:
-        T1=QCDIR+"/qc_reads/{sample}_1.fastp.fastq.gz",
-        T2=QCDIR+"/qc_reads/{sample}_2.fastp.fastq.gz",
-        json=QCDIR+"/qc_reads/{sample}.fastp.json",
-        html=QCDIR+"/qc_reads/{sample}.fastp.html",
-    shell:
-        """
-        fastp \
-            --in1 {input.R1} \
-            --in2 {input.R2} \
-            --out1 {output.T1} \
-            --out2 {output.T2} \
-            --json {output.json} \
-            --html {output.html} \
-            --thread {threads} \
-            --detect_adapter_for_pe
-        """
+# rule fastp:
+#     conda: "envs/fastp.yaml"
+#     resources:
+#         mem_mb=20000,
+#         time_min=360,
+#     threads: 12
+#     input:
+#         R1=RAWDIR + "/raw_fastq/{sample}_1.fastq.gz",
+#         R2=RAWDIR + "/raw_fastq/{sample}_2.fastq.gz",
+#     output:
+#         T1=QCDIR+"/qc_reads/{sample}_1.fastp.fastq.gz",
+#         T2=QCDIR+"/qc_reads/{sample}_2.fastp.fastq.gz",
+#         json=QCDIR+"/qc_reads/{sample}.fastp.json",
+#         html=QCDIR+"/qc_reads/{sample}.fastp.html",
+#     shell:
+#         """
+#         fastp \
+#             --in1 {input.R1} \
+#             --in2 {input.R2} \
+#             --out1 {output.T1} \
+#             --out2 {output.T2} \
+#             --json {output.json} \
+#             --html {output.html} \
+#             --thread {threads} \
+#             --detect_adapter_for_pe
+#         """
 
 
 
