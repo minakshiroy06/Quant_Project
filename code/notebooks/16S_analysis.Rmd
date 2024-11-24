@@ -1,0 +1,52 @@
+---
+title: ''
+author: 'Sarah Lucas'
+date: '`r Sys.Date()`'
+output:
+  pagedown::html_paged:
+    self_contained: false
+    toc: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning=FALSE
+)
+```
+
+# Setup
+
+```{r}
+library(tidyverse)
+library(phyloseq)
+library(hrbrthemes)
+```
+
+
+# Procedure
+
+## Read in data
+```{r}
+seqtab.nochim <- readRDS(here("data/processed/dada2/seqtab.nochim.rds"))
+taxa <- readRDS(here("data/processed/dada2/taxa.rds"))
+
+# Make a dummy dataframe for sample data - Minakshi, add to this!
+samdf <- data.frame(
+  ID = rownames(seqtab.nochim),                         # Numeric column for ID
+  Age = sample(30:80, 93, replace = TRUE),  # Random ages between 30 and 80
+  Gender = sample(c("Male", "Female"), 93, replace = TRUE),  # Random gender
+  Score = round(runif(93, 50, 100), 2)  # Random scores between 50 and 100
+)
+# Move the ID column to rownames so all the rows match between the three datasets
+samdf <- column_to_rownames(samdf, "ID")
+```
+
+## Phyloseq Object
+```{r}
+ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE), 
+               sample_data(samdf), 
+               tax_table(taxa))
+ps
+```
