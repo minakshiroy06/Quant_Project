@@ -37,3 +37,12 @@ rownames(taxa.print) <- NULL
 head(taxa.print)
 ```
 
+```{r}
+taxa_df <- data.frame(taxa) %>% rownames_to_column("ASV")
+write_csv(taxa_df, file = here("data/processed/dada2/taxa_df.csv"))
+```
+
+```{r}
+saveRDS(taxa, here("data/processed/dada2/taxa.rds"))
+```
+
