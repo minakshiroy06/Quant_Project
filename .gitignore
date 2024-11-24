@@ -49,3 +49,4 @@ data/filtered
 data/processed
 resources/
 r-conda.sh
+*.nb.html
