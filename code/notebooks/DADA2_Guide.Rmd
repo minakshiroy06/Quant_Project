@@ -147,8 +147,11 @@ sum(seqtab.nochim)/sum(seqtab)
 
 The frequency of chimeric sequences varies substantially from dataset to dataset, and depends on on factors including experimental procedures and sample complexity. Here chimeras make up about 21% of the merged sequence variants, but when we account for the abundances of those variants we see they account for only about 4% of the merged sequence reads.
 
+### Save output as RDS (matrix) and CSV (data.frame)
 ```{r}
 saveRDS(seqtab.nochim, file = here("data/processed/dada2/seqtab.nochim.rds"))
+seqtab_df <- data.frame(seqtab.nochim) %>% rownames_to_column("ASV")
+write_csv(seqtab_df, file = here("data/processed/dada2/seqtab_nochim_df.csv"))
 ```
 
 
@@ -169,6 +172,10 @@ Looks good! We kept the majority of our raw reads, and there is no over-large dr
   * If a majority of reads failed to merge, you may need to revisit the truncLen parameter used in the filtering step and make sure that the truncated reads span your amplicon. 
   * If a majority of reads were removed as chimeric, you may need to revisit the removal of primers, as the ambiguous nucleotides in unremoved primers interfere with chimera identification.
  
+ ### Save tracking file
+ ```{r}
+ write_csv
+ ```
 
 
 
