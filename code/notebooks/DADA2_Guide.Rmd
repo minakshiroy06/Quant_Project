@@ -170,29 +170,5 @@ Looks good! We kept the majority of our raw reads, and there is no over-large dr
   * If a majority of reads were removed as chimeric, you may need to revisit the removal of primers, as the ambiguous nucleotides in unremoved primers interfere with chimera identification.
  
 
-## Assign Taxonomy
-
-Databases were acquired from the DADA2 formatted files [here](https://zenodo.org/records/14169026)
-
-Genus level table
-```{r}
-taxa <- assignTaxonomy(seqtab.nochim, 
-                       here("resources/databases/silva_nr99_v138.2_toGenus_trainset.fa.gz"), 
-                       multithread=24)
-```
-
-Add species
-```{r}
-taxa <- addSpecies(taxa, "resources/databases/silva_v138.2_assignSpecies.fa.gz")
-```
-
-Inspect Taxonomy results
-```{r}
-taxa.print <- taxa # Removing sequence rownames for display only
-rownames(taxa.print) <- NULL
-head(taxa.print)
-```
-
-
 
 

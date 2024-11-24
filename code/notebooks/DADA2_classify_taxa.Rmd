@@ -1,0 +1,39 @@
+---
+title: "Assign Taxonomy"
+output: html_notebook
+---
+
+# setup
+```{r}
+library(dada2)
+library(here)
+library(tidyverse)
+```
+
+```{r}
+seqtab.nochim <- readRDS(here("data/processed/dada2/seqtab.nochim.rds"))
+```
+
+## Assign Taxonomy
+
+Databases were acquired from the DADA2 formatted files [here](https://zenodo.org/records/14169026)
+
+Genus level table
+```{r}
+taxa <- assignTaxonomy(seqtab.nochim, 
+                       here("resources/databases/silva_nr99_v138.2_toGenus_trainset.fa.gz"), 
+                       multithread=TRUE)
+```
+
+Add species
+```{r}
+taxa <- addSpecies(taxa, here("resources/databases/silva_v138.2_assignSpecies.fa.gz"))
+```
+
+Inspect Taxonomy results
+```{r}
+taxa.print <- taxa # Removing sequence rownames for display only
+rownames(taxa.print) <- NULL
+head(taxa.print)
+```
+
